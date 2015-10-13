@@ -1,7 +1,8 @@
-# OS X
-.DS_Store
-
 # Xcode
+#
+.DS_Store
+.idea/
+Project/Phoenix/remote/.git
 build/
 *.pbxuser
 !default.pbxuser
@@ -13,21 +14,17 @@ build/
 !default.perspectivev3
 xcuserdata
 *.xccheckout
-profile
 *.moved-aside
 DerivedData
 *.hmap
 *.ipa
-
-# Bundler
-.bundle
-
-Carthage
+*.xcuserstate
+# CocoaPods
+#
 # We recommend against adding the Pods directory to your .gitignore. However
 # you should judge for yourself, the pros and cons are mentioned at:
 # http://guides.cocoapods.org/using/using-cocoapods.html#should-i-ignore-the-pods-directory-in-source-control
-# 
-# Note: if you ignore the Pods directory, make sure to uncomment
-# `pod install` in .travis.yml
 #
 # Pods/
+Project/Phoenix/Images.xcassets/food/img_douguo.imageset/Contents.json
+Project/Phoenix/Images.xcassets/food/img_douguo.imageset/img_douguo.png

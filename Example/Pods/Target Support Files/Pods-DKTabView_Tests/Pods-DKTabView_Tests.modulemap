@@ -1,0 +1,6 @@
+framework module Pods_DKTabView_Tests {
+  umbrella header "Pods-DKTabView_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

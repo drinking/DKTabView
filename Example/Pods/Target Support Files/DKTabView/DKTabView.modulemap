@@ -1,0 +1,6 @@
+framework module DKTabView {
+  umbrella header "DKTabView-umbrella.h"
+
+  export *
+  module * { export * }
+}

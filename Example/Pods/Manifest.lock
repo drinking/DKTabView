@@ -1,0 +1,14 @@
+PODS:
+  - DKTabView (0.1.0)
+
+DEPENDENCIES:
+  - DKTabView (from `../`)
+
+EXTERNAL SOURCES:
+  DKTabView:
+    :path: ../
+
+SPEC CHECKSUMS:
+  DKTabView: 59b42c850a4ff41742a1c2a41ac970885c09943a
+
+COCOAPODS: 0.39.0
