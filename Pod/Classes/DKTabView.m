@@ -35,12 +35,12 @@
 
     _tabViewItems = [NSArray array];
     _tabViewItemMargin = UIEdgeInsetsZero;
-    _layoutStyle = DKTABFILLPARENT;
+    _layoutStyle = DKTabFillParent;
 
     _cursorIndex = 0;
     _showCursor = YES;
     _cursorAnimationDuration = 0.4;
-    _cursorStyle = DKTABCURSORUNDERNEATH;
+    _cursorStyle = DKTabCursorUnderneath;
     _cursorHeight = 2;
     _cursorWrapInset = CGVectorMake(0, 0);
 
@@ -58,7 +58,7 @@
 
     _scrollView.bounds = self.bounds;
 
-    if (_layoutStyle == DKTABFILLPARENT) {
+    if (_layoutStyle == DKTabFillParent) {
         [self.tabViewItems enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             CGFloat width = CGRectGetWidth(self.frame) / self.self.tabViewItems.count;
             view.frame = (CGRect) {CGPointMake(idx * width, 0), CGSizeMake(width, CGRectGetHeight(self.frame))};
@@ -93,12 +93,12 @@
 - (void)animateCursorTo:(NSInteger)index {
 
     [UIView animateWithDuration:_cursorAnimationDuration animations:^{
-        if (self.cursorStyle == DKTABCURSORUNDERNEATH) {
+        if (self.cursorStyle == DKTabCursorUnderneath) {
             CGRect frame = ((UIView *) self.tabViewItems[index]).frame;
             frame.origin.y = CGRectGetHeight(self.frame) - _cursorHeight;
             frame.size = CGSizeMake(frame.size.width, _cursorHeight);
             self.cursorView.frame = frame;
-        } else if (self.cursorStyle == DKTABCURSORWRAP) {
+        } else if (self.cursorStyle == DKTabCursorWrap) {
             self.cursorView.frame = CGRectInset(((UIView *) self.tabViewItems[index]).frame, -_cursorWrapInset.dx, -_cursorWrapInset.dx);;
         }
 

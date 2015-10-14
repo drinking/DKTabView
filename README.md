@@ -15,8 +15,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 Here's how to create a custom tab view.
 ```objc
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 120, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTABFILLPARENT;
-    tabView.cursorStyle = DKTABCURSORUNDERNEATH;
+    tabView.layoutStyle = DKTabFillParent;
+    tabView.cursorStyle = DKTabCursorUnderneath;
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.cursorView.backgroundColor = [UIColor blackColor];
 

@@ -35,8 +35,8 @@
 
 - (void)buildTabViewStyle1 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 20, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTABWRAPCONTENT;
-    tabView.cursorStyle = DKTABCURSORWRAP;
+    tabView.layoutStyle = DKTabWrapContent;
+    tabView.cursorStyle = DKTabCursorWrap;
     tabView.cursorWrapInset = CGVectorMake(2,2);
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.tabViewItemMargin = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -71,8 +71,8 @@
 
 - (void)buildTabViewStyle2 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 70, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTABWRAPCONTENT;
-    tabView.cursorStyle = DKTABCURSORUNDERNEATH;
+    tabView.layoutStyle = DKTabWrapContent;
+    tabView.cursorStyle = DKTabCursorUnderneath;
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.tabViewItemMargin = UIEdgeInsetsMake(0, 10, 0, 0);
     tabView.cursorView.backgroundColor = [UIColor redColor];
@@ -106,8 +106,8 @@
 
 - (void)buildTabViewStyle3 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 120, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTABFILLPARENT;
-    tabView.cursorStyle = DKTABCURSORUNDERNEATH;
+    tabView.layoutStyle = DKTabFillParent;
+    tabView.cursorStyle = DKTabCursorUnderneath;
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.cursorView.backgroundColor = [UIColor blackColor];
 
@@ -130,7 +130,7 @@
 
 - (void)buildTabViewStyle4 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 170, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTABFILLPARENT;
+    tabView.layoutStyle = DKTabFillParent;
     tabView.showCursor = NO;
     tabView.backgroundColor = [UIColor whiteColor];
 

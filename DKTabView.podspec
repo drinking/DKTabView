@@ -17,11 +17,11 @@ Pod::Spec.new do |s|
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!  
   s.description      = <<-DESC
-   DKTabView is a class designed to simplify the implementation of various types of tab view.You can customize your TabItem and animate cursor between them.For more details to see the Example.
+   DKTabView is a class designed to simplify the implementation of various types of tab view.You can customize your TabItems and animate cursor between them.For more details to see the Example.
                        DESC
 
   s.homepage         = "https://github.com/drinking/DKTabView"
-  s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "drinking" => "pan49@126.com" }
   s.source           = { :git => "https://github.com/drinking/DKTabView.git", :tag => s.version.to_s }
