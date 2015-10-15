@@ -37,10 +37,18 @@
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 20, CGRectGetWidth(self.view.frame), 44)];
     tabView.layoutStyle = DKTabWrapContent;
     tabView.cursorStyle = DKTabCursorWrap;
-    tabView.cursorWrapInset = CGVectorMake(2,2);
+    tabView.cursorWrapInset = CGVectorMake(2, 2);
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.tabViewItemMargin = UIEdgeInsetsMake(0, 10, 0, 0);
-    tabView.cursorView.backgroundColor = [UIColor colorWithRed:110.0/255.0 green:164.0/255.0 blue:175.0/255.0 alpha:1];
+    tabView.cursorView.backgroundColor = [UIColor colorWithRed:110.0 / 255.0 green:164.0 / 255.0 blue:175.0 / 255.0 alpha:1];
+    tabView.normalizeTabItemBlock = ^(UIView *view, NSInteger index) {
+        UILabel *label = (UILabel *) view;
+        [label setTextColor:[UIColor blackColor]];
+    };
+    tabView.hightlightTabItemBlock = ^(UIView *view, NSInteger index) {
+        UILabel *label = (UILabel *) view;
+        [label setTextColor:[UIColor whiteColor]];
+    };
 
     [tabView buildTabViewWithItems:^NSArray * {
         NSArray * titles = @[@"推荐", @"美颜", @"美肤", @"抗氧化", @"去皱纹", @"消水肿"];
@@ -56,16 +64,6 @@
         return items;
     }];
 
-    tabView.normalizeTabItemBlock = ^(UIView *view,NSInteger index) {
-        UILabel *label = (UILabel *) view;
-        [label setTextColor:[UIColor blackColor]];
-    };
-
-    tabView.hightlightTabItemBlock = ^(UIView *view,NSInteger index) {
-        UILabel *label = (UILabel *) view;
-        [label setTextColor:[UIColor whiteColor]];
-    };
-
     [self.view addSubview:tabView];
 }
 
@@ -76,6 +74,16 @@
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.tabViewItemMargin = UIEdgeInsetsMake(0, 10, 0, 0);
     tabView.cursorView.backgroundColor = [UIColor redColor];
+
+    tabView.normalizeTabItemBlock = ^(UIView *view, NSInteger index) {
+        UILabel *label = (UILabel *) view;
+        [label setTextColor:[UIColor grayColor]];
+    };
+
+    tabView.hightlightTabItemBlock = ^(UIView *view, NSInteger index) {
+        UILabel *label = (UILabel *) view;
+        [label setTextColor:[UIColor redColor]];
+    };
 
     [tabView buildTabViewWithItems:^NSArray * {
         NSArray * titles = @[@"Apple", @"Apple", @"AppleAppleApple", @"Apple", @"Apple", @"Apple", @"Apple", @"Apple", @"Apple", @"Apple", @"Apple", @"Apple"];
@@ -90,16 +98,6 @@
         }
         return items;
     }];
-
-    tabView.normalizeTabItemBlock = ^(UIView *view,NSInteger index) {
-        UILabel *label = (UILabel *) view;
-        [label setTextColor:[UIColor grayColor]];
-    };
-
-    tabView.hightlightTabItemBlock = ^(UIView *view,NSInteger index) {
-        UILabel *label = (UILabel *) view;
-        [label setTextColor:[UIColor redColor]];
-    };
 
     [self.view addSubview:tabView];
 }
@@ -137,6 +135,23 @@
     NSArray * imageNames = @[@"home", @"heart", @"refresh", @"locked"];
     NSArray * imageHLNames = @[@"home_hl", @"heart_hl", @"refresh_hl", @"locked_hl"];
 
+    tabView.normalizeTabItemBlock = ^(UIView *view, NSInteger index) {
+        UIImageView *imageView = (UIImageView *) view;
+        [imageView setImage:[UIImage imageNamed:imageNames[index]]];
+    };
+
+    tabView.hightlightTabItemBlock = ^(UIView *view, NSInteger index) {
+        UIImageView *imageView = (UIImageView *) view;
+        [imageView setImage:[UIImage imageNamed:imageHLNames[index]]];
+
+    };
+
+    tabView.didTapItemAtIndexBlock = ^(UIView *view, NSInteger index) {
+        NSString * title = [NSString stringWithFormat:@"Click At Tab %d", index + 1];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    };
+
     [tabView buildTabViewWithItems:^NSArray * {
         NSMutableArray *items = [[NSMutableArray alloc] init];
         for (NSString *name in imageNames) {
@@ -147,22 +162,6 @@
         return items;
     }];
 
-    tabView.normalizeTabItemBlock = ^(UIView *view,NSInteger index) {
-        UIImageView *imageView = (UIImageView *)view;
-        [imageView setImage:[UIImage imageNamed:imageNames[index]]];
-    };
-
-    tabView.hightlightTabItemBlock = ^(UIView *view,NSInteger index) {
-        UIImageView *imageView = (UIImageView *)view;
-        [imageView setImage:[UIImage imageNamed:imageHLNames[index]]];
-
-    };
-
-    tabView.didTapItemAtIndexBlock = ^(UIView *view,NSInteger index) {
-        NSString *title = [NSString stringWithFormat:@"Click At Tab %d",index+1];
-        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
-        [alertView show];
-    };
 
     [self.view addSubview:tabView];
 }

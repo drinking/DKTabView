@@ -20,6 +20,7 @@ Here's how to create a custom tab view.
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.cursorView.backgroundColor = [UIColor blackColor];
 
+    // This method should be invoked at the last step
     [tabView buildTabViewWithItems:^NSArray * {
         NSArray * titles = @[@"NEWS", @"CULTURE", @"BOOKS", @"BUSINESS"];
         NSMutableArray *items = [[NSMutableArray alloc] init];

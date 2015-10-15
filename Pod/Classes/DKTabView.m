@@ -50,7 +50,6 @@
     _scrollView.backgroundColor = [UIColor clearColor];
 
     self.cursorView = [[UIView alloc] init];
-    [self.scrollView addSubview:self.cursorView];
 }
 
 - (void)layoutSubviews {
@@ -76,7 +75,8 @@
         self.scrollView.contentSize = CGSizeMake(contentWidth, CGRectGetHeight(self.frame));
     }
 
-    [self updateCursorToIndex:self.cursorIndex];
+    [self updateCursorToIndex:self.cursorIndex withAnimation:NO];
+
 }
 
 - (void)didTapped:(UITapGestureRecognizer *)gesture {
@@ -90,9 +90,9 @@
     }
 }
 
-- (void)animateCursorTo:(NSInteger)index {
+- (void)moveCursorTo:(NSInteger)index withAnimation:(BOOL)animate {
 
-    [UIView animateWithDuration:_cursorAnimationDuration animations:^{
+    void (^repositionCursorBlock)(void) = ^{
         if (self.cursorStyle == DKTabCursorUnderneath) {
             CGRect frame = ((UIView *) self.tabViewItems[index]).frame;
             frame.origin.y = CGRectGetHeight(self.frame) - _cursorHeight;
@@ -109,14 +109,22 @@
                 }
             }
         }];
-    }                completion:^(BOOL finished) {
+    };
+
+    if (!animate) {
+        repositionCursorBlock();
         [self refreshTabItemState];
-    }];
+        return;
+    }
+
+    [UIView animateWithDuration:_cursorAnimationDuration animations:repositionCursorBlock
+                     completion:^(BOOL finished) {
+                         [self refreshTabItemState];
+                     }];
 
 }
 
-- (void)updateCursorToIndex:(NSInteger)index {
-
+- (void)updateCursorToIndex:(NSInteger)index withAnimation:(BOOL)animate {
 
     if (index < 0 || index >= self.tabViewItems.count) {
         return;
@@ -129,7 +137,7 @@
         return;
     }
 
-    [self animateCursorTo:index];
+    [self moveCursorTo:index withAnimation:animate];
 
     if (self.scrollView.contentSize.width <= CGRectGetWidth(self.scrollView.frame)) {
         return;
@@ -140,6 +148,10 @@
     CGFloat maxOffset = self.scrollView.contentSize.width - CGRectGetWidth(self.frame);
     offset = offset > 0 ? (offset > maxOffset ? maxOffset : offset) : 0;
     [self.scrollView setContentOffset:CGPointMake(offset, 0) animated:YES];
+}
+
+- (void)updateCursorToIndex:(NSInteger)index {
+    [self updateCursorToIndex:index withAnimation:YES];
 }
 
 - (void)refreshTabItemState {
@@ -162,10 +174,10 @@
     NSArray * items = tabViewItems();
     self.tabViewItems = [[NSMutableArray alloc] initWithArray:items];
 
-    for (UIView *view in self.scrollView.subviews) {
-        if (view != self.cursorView) {
-            [view removeFromSuperview];
-        }
+    [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+
+    if (_showCursor) {
+        [self.scrollView addSubview:self.cursorView];
     }
 
     [self.tabViewItems enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
@@ -176,10 +188,8 @@
         [self.scrollView addSubview:item];
     }];
 
-    self.cursorView.hidden = !_showCursor;
-    if (_showCursor) {
-        [self updateCursorToIndex:0];
-    }
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 
 }
 
