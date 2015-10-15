@@ -8,8 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@class DKTabView;
-
 typedef NS_ENUM(NSInteger, DKTabLayoutStyle) {
     DKTabFillParent, DKTabWrapContent
 };
@@ -19,7 +17,7 @@ typedef NS_ENUM(NSInteger, DKTabCursorStyle) {
 };
 
 
-typedef void (^dkTabItemAtIndexBlock)(UIView *view,NSInteger index);
+typedef void (^dkTabItemAtIndexBlock)(UIView *view, NSInteger index);
 
 @interface DKTabView : UIView
 
@@ -40,5 +38,6 @@ typedef void (^dkTabItemAtIndexBlock)(UIView *view,NSInteger index);
 @property(nonatomic, copy) dkTabItemAtIndexBlock didTapItemAtIndexBlock;
 
 - (void)buildTabViewWithItems:(NSArray *(^)())tabViewItems;
+
 - (void)updateCursorToIndex:(NSInteger)index;
 @end
