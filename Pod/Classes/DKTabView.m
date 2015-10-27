@@ -48,6 +48,7 @@
     [self addSubview:_scrollView];
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.backgroundColor = [UIColor clearColor];
+    _scrollView.scrollsToTop = NO;
 
     self.cursorView = [[UIView alloc] init];
 }
