@@ -13,11 +13,13 @@ typedef NS_ENUM(NSInteger, DKTabLayoutStyle) {
 };
 
 typedef NS_ENUM(NSInteger, DKTabCursorStyle) {
-    DKTabCursorBottom, // Cursor stay at bottom, the same width as container
-    DKTabCursorBottomWrap, // Cursor stay at bottom, the same width as textLabel
-    DKTabCursorFill // Cursor fill the space of textLabel
+    // Cursor stay at bottom, the same width as container
+    DKTabCursorBottom,
+    // Cursor stay at bottom, the same width as textLabel
+    DKTabCursorBottomWrap,
+    // Cursor fill the space of textLabel
+    DKTabCursorFill
 };
-
 
 typedef void (^dkTabItemAtIndexBlock)(UIView *view, NSInteger index);
 
@@ -31,7 +33,6 @@ typedef void (^dkTabItemAtIndexBlock)(UIView *view, NSInteger index);
 @property(nonatomic, assign) CGVector cursorWrapInset;
 @property(nonatomic, assign) NSInteger cursorIndex;
 
-
 @property(nonatomic, assign) UIEdgeInsets tabViewItemMargin;
 @property(nonatomic, assign) DKTabLayoutStyle layoutStyle;
 
@@ -39,7 +40,7 @@ typedef void (^dkTabItemAtIndexBlock)(UIView *view, NSInteger index);
 @property(nonatomic, copy) dkTabItemAtIndexBlock normalizeTabItemBlock;
 @property(nonatomic, copy) dkTabItemAtIndexBlock didTapItemAtIndexBlock;
 
-- (void)buildTabViewWithItems:(NSArray *(^)())tabViewItems;
+- (void)buildTabViewWithItems:(NSArray *(^)(void))tabViewItems;
 
 - (void)updateCursorToIndex:(NSInteger)index;
 @end

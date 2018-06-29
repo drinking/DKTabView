@@ -151,7 +151,7 @@
     };
 
     tabView.didTapItemAtIndexBlock = ^(UIView *view, NSInteger index) {
-        NSString * title = [NSString stringWithFormat:@"Click At Tab %d", index + 1];
+        NSString * title = [NSString stringWithFormat:@"Click At Tab %ld", index + 1];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title message:@"" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     };

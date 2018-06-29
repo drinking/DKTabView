@@ -98,20 +98,23 @@
 
 - (void)moveCursorTo:(NSInteger)index withAnimation:(BOOL)animate {
 
+    
+    __weak typeof(self) weakSelf = self;
     void (^repositionCursorBlock)(void) = ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
         if (self.cursorStyle == DKTabCursorBottom) {
             CGRect frame = ((UIView *) self.tabViewItems[index]).frame;
-            frame.origin.y = CGRectGetHeight(self.frame) - _cursorHeight;
-            frame.size = CGSizeMake(frame.size.width, _cursorHeight);
+            frame.origin.y = CGRectGetHeight(self.frame) - strongSelf.cursorHeight;
+            frame.size = CGSizeMake(frame.size.width, strongSelf.cursorHeight);
             self.cursorView.frame = frame;
         } else if (self.cursorStyle == DKTabCursorFill) {
-            self.cursorView.frame = CGRectInset(((UIView *) self.tabViewItems[index]).frame, -_cursorWrapInset.dx, -_cursorWrapInset.dx);;
+            self.cursorView.frame = CGRectInset(((UIView *) self.tabViewItems[index]).frame, -strongSelf.cursorWrapInset.dx, -strongSelf.cursorWrapInset.dx);;
         }else if (self.cursorStyle == DKTabCursorBottomWrap) {
             UIView *container = self.tabViewItems[index];
             CGRect frame = [container viewWithTag:10000].frame;
-            frame.origin.y = CGRectGetHeight(self.frame) - _cursorHeight;
+            frame.origin.y = CGRectGetHeight(self.frame) - strongSelf.cursorHeight;
             frame.origin.x = container.frame.origin.x + frame.origin.x;
-            frame.size = CGSizeMake(frame.size.width, _cursorHeight);
+            frame.size = CGSizeMake(frame.size.width, strongSelf.cursorHeight);
             self.cursorView.frame = frame;
         }
 
@@ -182,7 +185,7 @@
 }
 
 
-- (void)buildTabViewWithItems:(NSArray *(^)())tabViewItems {
+- (void)buildTabViewWithItems:(NSArray *(^)(void))tabViewItems {
 
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 
