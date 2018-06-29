@@ -9,11 +9,13 @@
 #import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, DKTabLayoutStyle) {
-    DKTabFillParent, DKTabWrapContent
+    DKTabLayoutFill, DKTabLayoutWrap
 };
 
 typedef NS_ENUM(NSInteger, DKTabCursorStyle) {
-    DKTabCursorUnderneath, DKTabCursorWrap
+    DKTabCursorBottom, // Cursor stay at bottom, the same width as container
+    DKTabCursorBottomWrap, // Cursor stay at bottom, the same width as textLabel
+    DKTabCursorFill // Cursor fill the space of textLabel
 };
 
 

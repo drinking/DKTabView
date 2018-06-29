@@ -35,12 +35,12 @@
 
     _tabViewItems = [NSArray array];
     _tabViewItemMargin = UIEdgeInsetsZero;
-    _layoutStyle = DKTabFillParent;
+    _layoutStyle = DKTabLayoutFill;
 
     _cursorIndex = 0;
     _showCursor = YES;
     _cursorAnimationDuration = 0.4;
-    _cursorStyle = DKTabCursorUnderneath;
+    _cursorStyle = DKTabCursorBottom;
     _cursorHeight = 2;
     _cursorWrapInset = CGVectorMake(0, 0);
 
@@ -58,18 +58,23 @@
 
     _scrollView.bounds = self.bounds;
 
-    if (_layoutStyle == DKTabFillParent) {
+    if (_layoutStyle == DKTabLayoutFill) {
         [self.tabViewItems enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             CGFloat width = CGRectGetWidth(self.frame) / self.self.tabViewItems.count;
             view.frame = (CGRect) {CGPointMake(idx * width, 0), CGSizeMake(width, CGRectGetHeight(self.frame))};
+            UILabel *label = [view viewWithTag:10000];
+            [label sizeToFit];
+            label.center = CGPointMake(width/2, CGRectGetHeight(self.frame)/2);
         }];
     } else {
         __block CGFloat contentWidth = self.tabViewItemMargin.left;
         [self.tabViewItems enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
-            [view sizeToFit];
-            CGFloat width = CGRectGetWidth(view.frame);
+            UILabel *label = [view viewWithTag:10000];
+            [label sizeToFit];
+            CGRect frame = label.bounds;
+            CGFloat width = CGRectGetWidth(frame);
             CGFloat viewHeight = CGRectGetHeight(self.frame);
-            view.frame = (CGRect) {CGPointMake(contentWidth, (viewHeight - CGRectGetHeight(view.frame)) / 2), CGSizeMake(width, CGRectGetHeight(view.frame))};
+            view.frame = (CGRect) {CGPointMake(contentWidth, (viewHeight - CGRectGetHeight(frame)) / 2), CGSizeMake(width, CGRectGetHeight(frame))};
             contentWidth += (width + self.tabViewItemMargin.left);
         }];
 
@@ -94,19 +99,26 @@
 - (void)moveCursorTo:(NSInteger)index withAnimation:(BOOL)animate {
 
     void (^repositionCursorBlock)(void) = ^{
-        if (self.cursorStyle == DKTabCursorUnderneath) {
+        if (self.cursorStyle == DKTabCursorBottom) {
             CGRect frame = ((UIView *) self.tabViewItems[index]).frame;
             frame.origin.y = CGRectGetHeight(self.frame) - _cursorHeight;
             frame.size = CGSizeMake(frame.size.width, _cursorHeight);
             self.cursorView.frame = frame;
-        } else if (self.cursorStyle == DKTabCursorWrap) {
+        } else if (self.cursorStyle == DKTabCursorFill) {
             self.cursorView.frame = CGRectInset(((UIView *) self.tabViewItems[index]).frame, -_cursorWrapInset.dx, -_cursorWrapInset.dx);;
+        }else if (self.cursorStyle == DKTabCursorBottomWrap) {
+            UIView *container = self.tabViewItems[index];
+            CGRect frame = [container viewWithTag:10000].frame;
+            frame.origin.y = CGRectGetHeight(self.frame) - _cursorHeight;
+            frame.origin.x = container.frame.origin.x + frame.origin.x;
+            frame.size = CGSizeMake(frame.size.width, _cursorHeight);
+            self.cursorView.frame = frame;
         }
 
         [self.tabViewItems enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
             if (idx != self.cursorIndex) {
                 if (self.normalizeTabItemBlock) {
-                    self.normalizeTabItemBlock(view, idx);
+                    self.normalizeTabItemBlock([view viewWithTag:10000], idx);
                 }
             }
         }];
@@ -159,11 +171,11 @@
     [self.tabViewItems enumerateObjectsUsingBlock:^(UIView *view, NSUInteger idx, BOOL *stop) {
         if (idx == self.cursorIndex) {
             if (self.hightlightTabItemBlock) {
-                self.hightlightTabItemBlock(view, idx);
+                self.hightlightTabItemBlock([view viewWithTag:10000], idx);
             }
         } else {
             if (self.normalizeTabItemBlock) {
-                self.normalizeTabItemBlock(view, idx);
+                self.normalizeTabItemBlock([view viewWithTag:10000], idx);
             }
         }
     }];
@@ -172,22 +184,26 @@
 
 - (void)buildTabViewWithItems:(NSArray *(^)())tabViewItems {
 
-    NSArray * items = tabViewItems();
-    self.tabViewItems = [[NSMutableArray alloc] initWithArray:items];
-
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 
     if (_showCursor) {
         [self.scrollView addSubview:self.cursorView];
     }
-
-    [self.tabViewItems enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
+    
+    NSMutableArray *items = [@[] mutableCopy];
+    [tabViewItems() enumerateObjectsUsingBlock:^(UIView *item, NSUInteger idx, BOOL *stop) {
+        item.tag = 10000;
+        UIView *containerView = [UIView new];
         UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapped:)];
-        item.userInteractionEnabled = YES;
-        item.tag = idx;
-        [item addGestureRecognizer:gesture];
-        [self.scrollView addSubview:item];
+        containerView.userInteractionEnabled = YES;
+        containerView.tag = idx;
+        [containerView addGestureRecognizer:gesture];
+        [containerView addSubview:item];
+        [items addObject:containerView];
+        [self.scrollView addSubview:containerView];
     }];
+    
+    self.tabViewItems = items;
 
     [self setNeedsLayout];
     [self layoutIfNeeded];

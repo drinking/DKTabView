@@ -27,16 +27,10 @@
 
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 - (void)buildTabViewStyle1 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 20, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTabWrapContent;
-    tabView.cursorStyle = DKTabCursorWrap;
+    tabView.layoutStyle = DKTabLayoutWrap;
+    tabView.cursorStyle = DKTabCursorFill;
     tabView.cursorWrapInset = CGVectorMake(2, 2);
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.tabViewItemMargin = UIEdgeInsetsMake(0, 10, 0, 0);
@@ -69,8 +63,8 @@
 
 - (void)buildTabViewStyle2 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 70, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTabWrapContent;
-    tabView.cursorStyle = DKTabCursorUnderneath;
+    tabView.layoutStyle = DKTabLayoutWrap;
+    tabView.cursorStyle = DKTabCursorBottom;
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.tabViewItemMargin = UIEdgeInsetsMake(0, 10, 0, 0);
     tabView.cursorView.backgroundColor = [UIColor redColor];
@@ -104,10 +98,20 @@
 
 - (void)buildTabViewStyle3 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 120, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTabFillParent;
-    tabView.cursorStyle = DKTabCursorUnderneath;
+    tabView.layoutStyle = DKTabLayoutFill;
+    tabView.cursorStyle = DKTabCursorBottomWrap;
     tabView.backgroundColor = [UIColor whiteColor];
     tabView.cursorView.backgroundColor = [UIColor blackColor];
+    
+    tabView.hightlightTabItemBlock = ^(UIView *view, NSInteger index) {
+        UILabel *label = (UILabel *) view;
+        [label setTextColor:[UIColor grayColor]];
+    };
+    
+    tabView.normalizeTabItemBlock = ^(UIView *view, NSInteger index) {
+        UILabel *label = (UILabel *) view;
+        [label setTextColor:[UIColor blackColor]];
+    };
 
     [tabView buildTabViewWithItems:^NSArray * {
         NSArray * titles = @[@"NEWS", @"CULTURE", @"BOOKS", @"BUSINESS"];
@@ -128,7 +132,7 @@
 
 - (void)buildTabViewStyle4 {
     DKTabView *tabView = [[DKTabView alloc] initWithFrame:CGRectMake(0, 170, CGRectGetWidth(self.view.frame), 44)];
-    tabView.layoutStyle = DKTabFillParent;
+    tabView.layoutStyle = DKTabLayoutFill;
     tabView.showCursor = NO;
     tabView.backgroundColor = [UIColor whiteColor];
 
